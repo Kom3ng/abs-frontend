@@ -1,0 +1,9 @@
+{
+    "name": "Abstruck",
+    "login": "Login",
+    "register": "Register",
+    "nav": {
+        "about": "About",
+        "products": "Products"
+    }
+}

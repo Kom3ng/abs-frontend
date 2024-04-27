@@ -1,0 +1,9 @@
+{
+    "name": "Abstruck",
+    "login": "登陆",
+    "register": "注册",
+    "nav": {
+        "about": "关于",
+        "products": "产品"
+    }
+}
