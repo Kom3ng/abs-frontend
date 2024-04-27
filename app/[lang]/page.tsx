@@ -1,10 +1,19 @@
-export default function Home() {
+import { getDictionary } from "./dictionaries";
+
+export async function generateStaticParams() {
+  return [{ lang: 'en-UK' }, { lang: 'zh-CN' }]
+}
+
+export default async function Home({params}: {params: { lang: string }}) {
+  const { lang } = params;
+  const dict = await getDictionary(lang);
+  
   return (
     <>
       <main className="min-h-screen">
         <div className="flex flex-center justify-center mt-40 space-x-8 divide-x-2">
           <div>
-            <h1 className="text-6xl font-extrabold">Abstruck</h1>
+            <h1 className="text-6xl font-extrabold">{dict.name}</h1>
             <p>test test...</p>
             <p>next generation!</p>
           </div>
