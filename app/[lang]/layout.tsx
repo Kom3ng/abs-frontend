@@ -37,8 +37,8 @@ export default async function RootLayout({
             </div>
             <div className="flex space-x-4 items-center m-4">
               <a target="_blank" href="https://github.com/abstruck-studio">
-                <Image src="/github-mark.svg" alt="github" className="block dark:hidden" width={24} height={24} />
-                <Image src="/github-mark-white.svg" alt="github" className="hidden dark:block" width={24} height={24} />
+                <Image src="/_/github-mark.svg" alt="github" className="block dark:hidden" width={24} height={24} />
+                <Image src="/_/github-mark-white.svg" alt="github" className="hidden dark:block" width={24} height={24} />
               </a>
               <a href={`/${lang}/login`}>{dict.login}</a>
               <div className="flex items-center rounded bg-neutral-800 dark:bg-neutral-200 h-full">
