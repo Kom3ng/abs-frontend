@@ -1,7 +1,7 @@
 import { getDictionary } from "./dictionaries";
 
 export async function generateStaticParams() {
-  return [{ lang: 'en-UK' }, { lang: 'zh-CN' }]
+  return [{ lang: 'en-US' }, { lang: 'zh-CN' }]
 }
 
 export default async function Home({params}: {params: { lang: string }}) {
