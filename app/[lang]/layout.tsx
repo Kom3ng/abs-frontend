@@ -3,6 +3,7 @@ import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { getDictionary } from "./dictionaries";
 import Image from "next/image";
+import React from "react";
 
 const jetBrainsMono = JetBrains_Mono({ subsets: ["latin"] });
 
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export async function generateStaticParams() {
-  return [{ lang: 'en-UK' }, { lang: 'zh-CN' }]
+  return [{ lang: 'en-US' }, { lang: 'zh-CN' }]
 }
 
 export default async function RootLayout({
