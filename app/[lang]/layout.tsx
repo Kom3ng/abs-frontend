@@ -4,6 +4,7 @@ import "./globals.css";
 import { getDictionary } from "./dictionaries";
 import Image from "next/image";
 import React from "react";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const jetBrainsMono = JetBrains_Mono({ subsets: ["latin"] });
 
@@ -49,6 +50,7 @@ export default async function RootLayout({
           </div>
         </nav>
         {children}
+        <GoogleAnalytics gaId="G-28G82HPB53" />
       </body>
     </html>
   );
