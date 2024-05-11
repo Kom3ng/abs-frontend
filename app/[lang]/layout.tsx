@@ -50,8 +50,8 @@ export default async function RootLayout({
           </div>
         </nav>
         {children}
-        <GoogleAnalytics gaId="G-28G82HPB53" />
       </body>
+      <GoogleAnalytics gaId="G-28G82HPB53" />
     </html>
   );
 }
