@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+model User {
+  id          Int    @id @default(autoincrement())
+  nickName    String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  avatar      String?   @default("https://lain.astrack.me/abs/img/default_avatar.png")
+  userGroup   UserGroup @relation(fields: [userGroupId], references: [id])
+  userGroupId String    @default("clz2bmr870000dp7kt9y8gdgc")
+  sex         Sex?      @relation(fields: [sexId], references: [id])
+  sexId       String?
+  birthday    DateTime?
+  sessions    Session[]
+  account    Account?
+}
+
+model Account {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User?     @relation(fields: [userId], references: [id])
+  userId    Int? @unique
+  email     String @unique
+  verifiedEmail  Boolean @default(false)
+  password  String
+  salt      String
+
+  @@index([email], type: Hash)
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+  sessionId String
+  userId    Int
+}
+
+model UserGroup {
+  id        String          @id @default(cuid())
+  name      String          @unique
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  roles     UserGroupRole[]
+  users     User[]
+}
+
+model Role {
+  id         String          @id @default(cuid())
+  name       String          @unique
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+  userGroups UserGroupRole[]
+}
+
+model UserGroupRole {
+  userGroupId String
+  roleId      String
+  userGroup   UserGroup @relation(fields: [userGroupId], references: [id])
+  role        Role      @relation(fields: [roleId], references: [id])
+
+  @@id([userGroupId, roleId])
+}
+
+model Sex {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  users     User[]
+}

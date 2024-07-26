@@ -14,3 +14,33 @@ export const getDictionary = async (locale: string) => {
 
   return dict();
 }
+
+export type Dict = {
+    name: string,
+    login: string,
+    register: string,
+    nav: {
+        about: string,
+        products: string
+    },
+    errors: {
+        input: {
+            nickname: {
+                required: string,
+                minlength: string,
+                maxlength: string
+            },
+            email: {
+                required: string,
+                invalid: string,
+                exist: string
+            },
+            password: {
+                required: string,
+                minlength: string,
+                maxlength: string,
+                invalid: string
+            }
+        }
+    }
+}

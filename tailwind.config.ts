@@ -4,6 +4,8 @@ const config: Config = {
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  plugins: [],
+  plugins: [
+      require('@tailwindcss/forms')
+  ],
 };
 export default config;

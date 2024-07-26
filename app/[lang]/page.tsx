@@ -9,8 +9,8 @@ export default async function Home({params}: {params: { lang: string }}) {
   const dict = await getDictionary(lang);
   
   return (
-    <>
-      <main className="min-h-screen">
+    <div className="w-screen flex justify-center">
+      <main className="min-h-screen max-w-screen-xl w-full">
         <div className="flex flex-center justify-center mt-40 space-x-8 divide-x-2">
           <div>
             <h1 className="text-6xl font-extrabold">{dict.name}</h1>
@@ -39,6 +39,6 @@ export default async function Home({params}: {params: { lang: string }}) {
           <p>Not public</p>
         </div>
       </main>
-    </>
+    </div>
   );
 }
