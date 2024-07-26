@@ -1,19 +1,8 @@
 import "server-only"
 
 import {PrismaClient} from "@prisma/client";
+import { withAccelerate } from "@prisma/extension-accelerate";
 
-let prisma: PrismaClient;
-
-if (process.env.NODE_ENV === 'production') {
-    prisma = new PrismaClient();
-} else {
-    // @ts-ignore
-    if (!global.prisma) {
-        // @ts-ignore
-        global.prisma = new PrismaClient();
-    }
-    // @ts-ignore
-    prisma = global.prisma;
-}
+const prisma = new PrismaClient().$extends(withAccelerate());
 
 export default prisma;
