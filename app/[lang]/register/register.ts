@@ -3,49 +3,15 @@
 import {getEmailSchema, getPasswordSchema} from "@/app/[lang]/register/schemas";
 import prisma from "@/app/lib/prisma";
 import { createHash, randomUUID } from "crypto";
-import { Dict } from "../dictionaries";
-
-interface RegisterResult {
-    success?: boolean
-    errorType?: "invalid-password" | "invalid-email" | "email-exists" | "server-error"
-}
-
-const emptyDict: Dict = {
-    name: "",
-    login: "",
-    register: "",
-    nav: {
-        about: "",
-        products: ""
-    },
-    errors: {
-        input: {
-            nickname: {
-                required: "",
-                minlength: "",
-                maxlength: ""
-            },
-            email: {
-                required: "",
-                invalid: "",
-                exist: ""
-            },
-            password: {
-                required: "",
-                minlength: "",
-                maxlength: "",
-                invalid: ""
-            }
-        }
-    }
-}
 
 export default async function register(prevState: any, f: FormData): Promise<RegisterResult> {
     const email = f.get('email')?.toString()
     const password = f.get('password')?.toString()
 
-    const emailSchema = getEmailSchema(emptyDict);
-    const passwordSchema = getPasswordSchema(emptyDict);
+    // @ts-ignore
+    const emailSchema = getEmailSchema(undefined);
+    // @ts-ignore
+    const passwordSchema = getPasswordSchema(undefined);
 
     if (!emailSchema.safeParse(email).success){
         return {

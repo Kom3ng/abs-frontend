@@ -24,6 +24,9 @@
                 "maxlength": "Password cannot be more than 20 characters long",
                 "invalid": "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character"
             }
-        }
-    }
+        },
+        "server": "Internal server error.",
+        "unkown": "Unkown error."
+    },
+    "registerSuccess": "Succesfully registered!"
 }

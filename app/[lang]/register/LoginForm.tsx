@@ -1,22 +1,22 @@
 "use client"
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Dict } from "@/app/[lang]/dictionaries";
 import { getEmailSchema, getPasswordSchema } from "@/app/[lang]/register/schemas";
 import register from "./register";
-import { useFormState } from "react-dom";
+import { useFormState, useFormStatus } from "react-dom";
 
 export default function LoginForm({ dict }: { dict: Dict }) {
     const [emailHint, setEmailHint] = useState<string>('');
     const [passwordHint, setPasswordHint] = useState<string>('');
 
-    const isEmailCorrect = useRef(false);
-    const isPasswordCorrect = useRef(false);
+    const [isEmailCorrect, setEmailCorrect] = useState(false);
+    const [isPasswordCorrect, setPasswordCorrect] = useState(false);
 
     const emailSchema = getEmailSchema(dict);
     const passwordSchema = getPasswordSchema(dict);
 
-
+    const { pending } = useFormStatus()
     const [state, formAction] = useFormState(register, {})
 
     return <>
@@ -41,8 +41,9 @@ export default function LoginForm({ dict }: { dict: Dict }) {
                                 setEmailHint(result.error.format()._errors[0]);
                                 return;
                             }
+
                             setEmailHint('');
-                            isEmailCorrect.current = result.success;
+                            setPasswordCorrect(true);
                         }}
                     />
                     {emailHint && <p className="text-sm text-red-500">{emailHint}</p>}
@@ -76,8 +77,9 @@ export default function LoginForm({ dict }: { dict: Dict }) {
                                 setPasswordHint(result.error.format()._errors[0]);
                                 return;
                             }
+
                             setPasswordHint('');
-                            isPasswordCorrect.current = result.success;
+                            setPasswordCorrect(true);
                         }}
                     />
                     {passwordHint && <p className="text-sm text-red-500">{passwordHint}</p>}
@@ -86,7 +88,7 @@ export default function LoginForm({ dict }: { dict: Dict }) {
 
             <div>
                 <button
-                    disabled={!isEmailCorrect || !isPasswordCorrect}
+                    disabled={!isEmailCorrect || !isPasswordCorrect || pending}
                     type="submit"
                     className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
@@ -94,13 +96,31 @@ export default function LoginForm({ dict }: { dict: Dict }) {
                 </button>
             </div>
 
-            {
-                state && ( state.success ? 
-                <div>success</div> 
-                : 
-                <div>{state.errorType}</div> 
-            )
-            }
+            {stateHint(state, dict)}
         </form>
     </>;
+}
+
+function stateHint(state: RegisterResult, dict: Dict){
+    console.log(state)
+
+    if (Object.keys(state).length === 0) {
+        return <></>
+    }
+
+    if (state.success) {
+        return <div className="text-green-500">{dict.registerSuccess}</div>
+    }
+
+    const msg = (() => {
+        switch(state.errorType){
+            case 'invalid-email': dict.errors.input.email.invalid
+            case 'email-exists': dict.errors.input.email.exist
+            case 'invalid-password': dict.errors.input.password.invalid
+            case 'server-error': dict.errors.server
+            default: return dict.errors.unkown
+        }
+    })()
+
+    return <div className="text-red-500">{msg}</div>
 }

@@ -41,6 +41,9 @@ export type Dict = {
                 maxlength: string,
                 invalid: string
             }
-        }
-    }
+        },
+        server: string,
+        unkown: string
+    },
+    registerSuccess: string
 }
