@@ -16,34 +16,34 @@ export const getDictionary = async (locale: string) => {
 }
 
 export type Dict = {
-    name: string,
-    login: string,
-    register: string,
-    nav: {
-        about: string,
-        products: string
+    name?: string,
+    login?: string,
+    register?: string,
+    nav?: {
+        about?: string,
+        products?: string
     },
-    errors: {
-        input: {
-            nickname: {
-                required: string,
-                minlength: string,
-                maxlength: string
+    errors?: {
+        input?: {
+            nickname?: {
+                required?: string,
+                minlength?: string,
+                maxlength?: string
             },
-            email: {
-                required: string,
-                invalid: string,
-                exist: string
+            email?: {
+                required?: string,
+                invalid?: string,
+                exist?: string
             },
-            password: {
-                required: string,
-                minlength: string,
-                maxlength: string,
-                invalid: string
+            password?: {
+                required?: string,
+                minlength?: string,
+                maxlength?: string,
+                invalid?: string
             }
         },
-        server: string,
-        unkown: string
+        server?: string,
+        unkown?: string
     },
-    registerSuccess: string
+    registerSuccess?: string
 }

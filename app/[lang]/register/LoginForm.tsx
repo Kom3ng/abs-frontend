@@ -43,7 +43,7 @@ export default function LoginForm({ dict }: { dict: Dict }) {
                             }
 
                             setEmailHint('');
-                            setPasswordCorrect(true);
+                            setEmailCorrect(true);
                         }}
                     />
                     {emailHint && <p className="text-sm text-red-500">{emailHint}</p>}
@@ -90,7 +90,7 @@ export default function LoginForm({ dict }: { dict: Dict }) {
                 <button
                     disabled={!isEmailCorrect || !isPasswordCorrect || pending}
                     type="submit"
-                    className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm disabled:bg-indigo-500 hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
                     {dict.register}
                 </button>
@@ -114,11 +114,11 @@ function stateHint(state: RegisterResult, dict: Dict){
 
     const msg = (() => {
         switch(state.errorType){
-            case 'invalid-email': dict.errors.input.email.invalid
-            case 'email-exists': dict.errors.input.email.exist
-            case 'invalid-password': dict.errors.input.password.invalid
-            case 'server-error': dict.errors.server
-            default: return dict.errors.unkown
+            case 'invalid-email': dict.errors?.input?.email?.invalid
+            case 'email-exists': dict.errors?.input?.email?.exist
+            case 'invalid-password': dict.errors?.input?.password?.invalid
+            case 'server-error': dict.errors?.server
+            default: return dict.errors?.unkown
         }
     })()
 

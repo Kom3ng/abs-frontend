@@ -8,10 +8,8 @@ export default async function register(prevState: any, f: FormData): Promise<Reg
     const email = f.get('email')?.toString()
     const password = f.get('password')?.toString()
 
-    // @ts-ignore
-    const emailSchema = getEmailSchema(undefined);
-    // @ts-ignore
-    const passwordSchema = getPasswordSchema(undefined);
+    const emailSchema = getEmailSchema({});
+    const passwordSchema = getPasswordSchema({});
 
     if (!emailSchema.safeParse(email).success){
         return {
