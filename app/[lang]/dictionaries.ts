@@ -43,7 +43,8 @@ export type Dict = {
             }
         },
         server?: string,
-        unkown?: string
+        unkown?: string,
+        turnsliteFailed?: string
     },
     registerSuccess?: string
 }

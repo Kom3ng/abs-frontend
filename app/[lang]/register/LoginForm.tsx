@@ -7,6 +7,7 @@ import register from "./register";
 import { useFormState, useFormStatus } from "react-dom";
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Turnstile } from "@marsidev/react-turnstile";
 
 export default function LoginForm({ dict }: { dict: Dict }) {
     const [emailHint, setEmailHint] = useState<string>('');
@@ -18,10 +19,15 @@ export default function LoginForm({ dict }: { dict: Dict }) {
     const emailSchema = getEmailSchema(dict);
     const passwordSchema = getPasswordSchema(dict);
 
-    const [state, formAction] = useFormState(register, {})
+    const [turnstileToken, setTurnstileToken] = useState<string>('');
+
+    const [state, setState] = useState({});
 
     return <>
-        <form className="space-y-6" action={formAction}>
+        <form className="space-y-6" action={async (e) => {
+            const result = await register(e, turnstileToken);
+            setState(result);
+        }}>
             <div>
                 <label htmlFor="email" className="block text-sm font-medium leading-6">
                     Email address
@@ -87,6 +93,8 @@ export default function LoginForm({ dict }: { dict: Dict }) {
                 </div>
             </div>
 
+            <Turnstile siteKey="0x4AAAAAAAf8kP7KFZJVZWRx" onSuccess={setTurnstileToken} />
+
             <div>
                 <SubmitButton isEmailCorrect={isEmailCorrect} isPasswordCorrect={isPasswordCorrect} dict={dict} />
             </div>
@@ -101,7 +109,7 @@ function SubmitButton({ isEmailCorrect, isPasswordCorrect, dict }: { isEmailCorr
 
     return (
         <button
-            disabled={!isEmailCorrect || !isPasswordCorrect || pending}
+            disabled={!isEmailCorrect || !isPasswordCorrect || pending }
             type="submit"
             className="flex space-x-2 w-full items-center justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm disabled:bg-indigo-500 hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
@@ -126,6 +134,7 @@ function StateHint({ state, dict }: { state: RegisterResult, dict: Dict }) {
             case 'email-exists': return dict.errors?.input?.email?.exist
             case 'invalid-password': return dict.errors?.input?.password?.invalid
             case 'server-error': return dict.errors?.server
+            case 'turnslite-failed': return dict.errors?.turnsliteFailed
             default: return dict.errors?.unkown
         }
     })()

@@ -4,7 +4,27 @@ import {getEmailSchema, getPasswordSchema} from "@/app/[lang]/register/schemas";
 import prisma from "@/app/lib/prisma";
 import { createHash, randomUUID } from "crypto";
 
-export default async function register(prevState: any, f: FormData): Promise<RegisterResult> {
+export default async function register(f: FormData, turnsliteToken: string): Promise<RegisterResult> {
+    const turnsliteResult = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+        body: JSON.stringify({
+            secret: process.env.TURNSTILE_SECRET,
+            response: turnsliteToken
+        }),
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		}
+    })
+
+    const c = await turnsliteResult.json()
+
+    if (!c.success){
+        return {
+            success: false,
+            errorType: 'turnslite-failed'
+        }
+    }
+    
     const email = f.get('email')?.toString()
     const password = f.get('password')?.toString()
 

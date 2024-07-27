@@ -1,4 +1,4 @@
 interface RegisterResult {
     success?: boolean
-    errorType?: "invalid-password" | "invalid-email" | "email-exists" | "server-error"
+    errorType?: "invalid-password" | "invalid-email" | "email-exists" | "server-error" | "turnslite-failed"
 }

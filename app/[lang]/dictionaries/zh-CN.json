@@ -26,7 +26,8 @@
             }
         },
         "server": "Internal server error.",
-        "unkown": "Unkown error."
+        "unkown": "Unkown error.",
+        "turnsliteFailed": "CAPTCHA failed."
     },
     "registerSuccess": "Succesfully registered!"
 }
