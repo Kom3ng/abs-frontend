@@ -5,6 +5,8 @@ import { Dict } from "@/app/[lang]/dictionaries";
 import { getEmailSchema, getPasswordSchema } from "@/app/[lang]/register/schemas";
 import register from "./register";
 import { useFormState, useFormStatus } from "react-dom";
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function LoginForm({ dict }: { dict: Dict }) {
     const [emailHint, setEmailHint] = useState<string>('');
@@ -16,7 +18,6 @@ export default function LoginForm({ dict }: { dict: Dict }) {
     const emailSchema = getEmailSchema(dict);
     const passwordSchema = getPasswordSchema(dict);
 
-    const { pending } = useFormStatus()
     const [state, formAction] = useFormState(register, {})
 
     return <>
@@ -87,23 +88,30 @@ export default function LoginForm({ dict }: { dict: Dict }) {
             </div>
 
             <div>
-                <button
-                    disabled={!isEmailCorrect || !isPasswordCorrect || pending}
-                    type="submit"
-                    className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm disabled:bg-indigo-500 hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                    {dict.register}
-                </button>
+                <SubmitButton isEmailCorrect={isEmailCorrect} isPasswordCorrect={isPasswordCorrect} dict={dict} />
             </div>
 
-            {stateHint(state, dict)}
+            <StateHint state={state} dict={dict} />
         </form>
     </>;
 }
 
-function stateHint(state: RegisterResult, dict: Dict){
-    console.log(state)
+function SubmitButton({ isEmailCorrect, isPasswordCorrect, dict }: { isEmailCorrect: boolean, isPasswordCorrect: boolean, dict: Dict }) {
+    const { pending } = useFormStatus()
 
+    return (
+        <button
+            disabled={!isEmailCorrect || !isPasswordCorrect || pending}
+            type="submit"
+            className="flex space-x-2 w-full items-center justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm disabled:bg-indigo-500 hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+            <div>{pending && <FontAwesomeIcon spin icon={faSpinner} />}</div>
+            <div>{dict.register}</div>
+        </button>
+    )
+}
+
+function StateHint({ state, dict }: { state: RegisterResult, dict: Dict }) {
     if (Object.keys(state).length === 0) {
         return <></>
     }
@@ -113,11 +121,11 @@ function stateHint(state: RegisterResult, dict: Dict){
     }
 
     const msg = (() => {
-        switch(state.errorType){
-            case 'invalid-email': dict.errors?.input?.email?.invalid
-            case 'email-exists': dict.errors?.input?.email?.exist
-            case 'invalid-password': dict.errors?.input?.password?.invalid
-            case 'server-error': dict.errors?.server
+        switch (state.errorType) {
+            case 'invalid-email': return dict.errors?.input?.email?.invalid
+            case 'email-exists': return dict.errors?.input?.email?.exist
+            case 'invalid-password': return dict.errors?.input?.password?.invalid
+            case 'server-error': return dict.errors?.server
             default: return dict.errors?.unkown
         }
     })()
