@@ -23,7 +23,7 @@ export default function RegisterVerifyMain({ dict }: { dict: Dict }) {
                     setVerifyState('failed');
                 }
             })
-    }, []);
+    }, [token]);
 
     if (verifyState === 'pending'){
         return <h1 className="m-16">{dict.registerPage?.verify?.pending}</h1>
