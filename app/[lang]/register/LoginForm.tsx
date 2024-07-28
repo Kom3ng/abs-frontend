@@ -4,7 +4,7 @@ import React, { useRef, useState } from "react";
 import { Dict } from "@/app/[lang]/dictionaries";
 import { getEmailSchema, getPasswordSchema } from "@/app/[lang]/register/schemas";
 import register from "./register";
-import { useFormState, useFormStatus } from "react-dom";
+import { useFormStatus } from "react-dom";
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Turnstile } from "@marsidev/react-turnstile";
@@ -16,16 +16,19 @@ export default function LoginForm({ dict }: { dict: Dict }) {
     const [isEmailCorrect, setEmailCorrect] = useState(false);
     const [isPasswordCorrect, setPasswordCorrect] = useState(false);
 
+    const [isShowTurnstile, setShowTurnstile] = useState(false);
+
     const emailSchema = getEmailSchema(dict);
     const passwordSchema = getPasswordSchema(dict);
 
-    const [turnstileToken, setTurnstileToken] = useState<string>('');
+    const turnstileToken = useRef<string>('');
+    const [isTurnsliteSuccess, setTurnstileSuccess] = useState(false);
 
     const [state, setState] = useState({});
 
     return <>
         <form className="space-y-6" action={async (e) => {
-            const result = await register(e, turnstileToken);
+            const result = await register(e, turnstileToken.current);
             setState(result);
         }}>
             <div>
@@ -87,16 +90,26 @@ export default function LoginForm({ dict }: { dict: Dict }) {
 
                             setPasswordHint('');
                             setPasswordCorrect(true);
+
+                            setShowTurnstile(true);
                         }}
                     />
                     {passwordHint && <p className="text-sm text-red-500">{passwordHint}</p>}
                 </div>
             </div>
 
-            <Turnstile siteKey="0x4AAAAAAAf8kP7KFZJVZWRx" onSuccess={setTurnstileToken} />
+            { isShowTurnstile && <Turnstile 
+            siteKey="0x4AAAAAAAf8kP7KFZJVZWRx" 
+            onSuccess={token => {
+                turnstileToken.current = token;
+                setTurnstileSuccess(true);
+            }}
+            onExpire={() => setTurnstileSuccess(false)}
+            onError={() => setTurnstileSuccess(false)}
+             /> }
 
             <div>
-                <SubmitButton isEmailCorrect={isEmailCorrect} isPasswordCorrect={isPasswordCorrect} dict={dict} />
+                <SubmitButton isEmailCorrect={isEmailCorrect} isPasswordCorrect={isPasswordCorrect} isTurnsliteSuccess={isTurnsliteSuccess} dict={dict} />
             </div>
 
             <StateHint state={state} dict={dict} />
@@ -104,12 +117,12 @@ export default function LoginForm({ dict }: { dict: Dict }) {
     </>;
 }
 
-function SubmitButton({ isEmailCorrect, isPasswordCorrect, dict }: { isEmailCorrect: boolean, isPasswordCorrect: boolean, dict: Dict }) {
+function SubmitButton({ isEmailCorrect, isPasswordCorrect, isTurnsliteSuccess, dict }: { isEmailCorrect: boolean, isPasswordCorrect: boolean, isTurnsliteSuccess: boolean, dict: Dict }) {
     const { pending } = useFormStatus()
 
     return (
         <button
-            disabled={!isEmailCorrect || !isPasswordCorrect || pending }
+            disabled={!isEmailCorrect || !isPasswordCorrect || !isTurnsliteSuccess || pending }
             type="submit"
             className="flex space-x-2 w-full items-center justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm disabled:bg-indigo-500 hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
