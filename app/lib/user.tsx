@@ -9,18 +9,3 @@ export const getUserById = async (id: number) => {
         }
     });
 }
-
-export const addSessionForUser = async (userId: number, sessionId: string) => {
-    await prisma.user.update({
-        where: {
-            id: userId
-        },
-        data: {
-            sessions: {
-                create: {
-                    sessionId,
-                }
-            }
-        }
-    })
-}

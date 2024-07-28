@@ -1,3 +1,5 @@
+// noinspection ES6MissingAwait
+
 "use server"
 
 import {getEmailSchema, getPasswordSchema} from "@/app/[lang]/register/schemas";
