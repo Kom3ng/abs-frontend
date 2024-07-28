@@ -6,6 +6,17 @@
         "about": "关于",
         "products": "产品"
     },
+    "registerPage": {
+        "verify": {
+            "pending": "Verirying your email... Please wait.",
+            "success": "Email verified! You can now login.",
+            "failed": "Email verification failed. Please try again.",
+            "noToken": "Are you serious?"
+        },
+        "toVerify": {
+            "message": "A verification email has been sent to your email address. Please verify your email to complete the registration."
+        }
+    },
     "errors": {
         "input": {
             "nickname": {

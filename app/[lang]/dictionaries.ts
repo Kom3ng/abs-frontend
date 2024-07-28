@@ -23,6 +23,17 @@ export type Dict = {
         about?: string,
         products?: string
     },
+    registerPage?: {
+        verify?: {
+            pending?: string,
+            success?: string,
+            failed?: string,
+            noToken?: string
+        },
+        toVerify?: {
+            message?: string
+        }
+    },
     errors?: {
         input?: {
             nickname?: {

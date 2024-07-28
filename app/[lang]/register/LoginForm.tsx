@@ -8,8 +8,9 @@ import { useFormStatus } from "react-dom";
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Turnstile } from "@marsidev/react-turnstile";
+import { useRouter } from "next/navigation";
 
-export default function LoginForm({ dict }: { dict: Dict }) {
+export default function LoginForm({ dict, lang }: { dict: Dict, lang: string }) {
     const [emailHint, setEmailHint] = useState<string>('');
     const [passwordHint, setPasswordHint] = useState<string>('');
 
@@ -112,7 +113,7 @@ export default function LoginForm({ dict }: { dict: Dict }) {
                 <SubmitButton isEmailCorrect={isEmailCorrect} isPasswordCorrect={isPasswordCorrect} isTurnsliteSuccess={isTurnsliteSuccess} dict={dict} />
             </div>
 
-            <StateHint state={state} dict={dict} />
+            <StateHint lang={lang} state={state} dict={dict} />
         </form>
     </>;
 }
@@ -132,12 +133,15 @@ function SubmitButton({ isEmailCorrect, isPasswordCorrect, isTurnsliteSuccess, d
     )
 }
 
-function StateHint({ state, dict }: { state: RegisterResult, dict: Dict }) {
+function StateHint({ state, dict, lang }: { state: RegisterResult, dict: Dict, lang: string }) {
+    const router = useRouter();
+
     if (Object.keys(state).length === 0) {
         return <></>
     }
 
     if (state.success) {
+        router.push(`/${lang}/register/toverify`)
         return <div className="text-green-500">{dict.registerSuccess}</div>
     }
 
