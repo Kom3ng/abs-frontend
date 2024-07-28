@@ -10,11 +10,9 @@ export default function RegisterVerifyMain({ dict }: { dict: Dict }) {
     const token = searchParams.get('token');
     const [verifyState, setVerifyState] = useState<'pending' | 'success' | 'failed'>('pending');
 
-    if (token === null){
-        return <h1 className="m-16">{dict.registerPage?.verify?.noToken}</h1>
-    }
-
     useEffect(() => {
+        if (!token) return
+
         verifyToken(token)
             .then(r => {
                 if (r){
@@ -24,6 +22,10 @@ export default function RegisterVerifyMain({ dict }: { dict: Dict }) {
                 }
             })
     }, [token]);
+
+    if (!token){
+        return <h1 className="m-16">{dict.registerPage?.verify?.noToken}</h1>
+    }
 
     if (verifyState === 'pending'){
         return <h1 className="m-16">{dict.registerPage?.verify?.pending}</h1>
