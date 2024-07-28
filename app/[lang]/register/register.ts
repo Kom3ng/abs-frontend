@@ -2,56 +2,40 @@
 
 import {getEmailSchema, getPasswordSchema} from "@/app/[lang]/register/schemas";
 import prisma from "@/app/lib/prisma";
+import { kv } from "@vercel/kv";
 import { createHash, randomUUID } from "crypto";
+import { ulid } from "ulid";
 
 export default async function register(f: FormData, turnsliteToken: string): Promise<RegisterResult> {
-    const turnsliteResult = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-        body: JSON.stringify({
-            secret: process.env.TURNSTILE_SECRET,
-            response: turnsliteToken
-        }),
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		}
-    })
-
-    const c = await turnsliteResult.json()
-
-    if (!c.success){
-        return {
-            success: false,
-            errorType: 'turnslite-failed'
-        }
-    }
-    
     const email = f.get('email')?.toString()
     const password = f.get('password')?.toString()
 
-    const emailSchema = getEmailSchema({});
-    const passwordSchema = getPasswordSchema({});
+    if (email === undefined || password === undefined){
+        return {}
+    }
 
-    if (!emailSchema.safeParse(email).success){
+    if (!isEmailValid(email)){
         return {
             success: false,
             errorType: 'invalid-email'
         }
     }
 
-    if (!passwordSchema.safeParse(password).success){
+    if (!isPasswordValid(password)){
         return {
             success: false,
             errorType: 'invalid-password'
         }
     }
 
-    const result = await prisma.account.findUnique({
-        where: {
-            email,
+    if (!await isTurnsliteValid(turnsliteToken)){
+        return {
+            success: false,
+            errorType: 'turnslite-failed'
         }
-    })
+    }
 
-    if (result != null) {
+    if (await isEmailExists(email)) {
         return {
             success: false,
             errorType: 'email-exists'
@@ -61,23 +45,59 @@ export default async function register(f: FormData, turnsliteToken: string): Pro
     const salt = randomUUID()
     const hash = createHash('sha256')
     hash.update(password+salt)
+    const passwordHash = hash.digest('base64')
+    
+    const token = generateToken()
+    
+    const kvKey = `verficationToken:${token}`
 
-    const r = await prisma.account.create({
-        data: {
-            email: email || '',
-            password: hash.digest('base64'),
-            salt
-        }
+
+    kv.hset(kvKey, {
+        password: passwordHash,
+        email,
+        salt
     })
+    
+    kv.expire(kvKey, 24 * 60 * 60)
 
-    if (r === null){
-        return {
-            success: false,
-            errorType: 'server-error'
-        }
-    }
-
-    // TODO send email
+    sendVerificationEmail(email, token)
 
     return { success: true }
+}
+
+async function isEmailExists(email: string | undefined) {
+    return await prisma.account.findUnique({
+        where: {
+            email,
+        }
+    }).then(r => r !== null);
+}
+
+async function isTurnsliteValid(token: string): Promise<boolean>{
+    return await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+        body: JSON.stringify({
+            secret: process.env.TURNSTILE_SECRET,
+            response: token
+        }),
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		}
+    }).then(r => r.json()).then(r => r.success === true)
+}
+
+function isEmailValid(email: string): boolean{
+    return getEmailSchema({}).safeParse(email).success
+}
+
+function isPasswordValid(password: string): boolean{
+    return getPasswordSchema({}).safeParse(password).success
+}
+
+async function sendVerificationEmail(email: string, token: string){
+    // TODO
+}
+
+function generateToken(): string{
+    return ulid()
 }
