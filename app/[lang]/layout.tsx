@@ -5,6 +5,7 @@ import { getDictionary } from "./dictionaries";
 import Image from "next/image";
 import React from "react";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import UserBar from "./UserBar";
 
 const jetBrainsMono = JetBrains_Mono({ subsets: ["latin"] });
 
@@ -43,10 +44,7 @@ export default async function RootLayout({
                   <Image src="/_/github-mark.svg" alt="github" className="block dark:hidden" width={24} height={24} />
                   <Image src="/_/github-mark-white.svg" alt="github" className="hidden dark:block" width={24} height={24} />
                 </a>
-                <a href={`/${lang}/login`}>{dict.login}</a>
-                <div className="flex items-center rounded bg-neutral-800 dark:bg-neutral-200 h-full">
-                  <a href={`/${lang}/register`} className="m-2 text-neutral-50 dark:text-neutral-900">{dict.register}</a>
-                </div>
+                <UserBar dict={dict} lang={lang} />
               </div>
             </div>
           </div>

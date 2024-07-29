@@ -23,6 +23,12 @@ export type Dict = {
         about?: string,
         products?: string
     },
+    loginPage?: {
+        formTitle?: string,
+        submit?: string,
+        success?: string,
+        emailOrPwdFailed?: string,
+    },
     registerPage?: {
         verify?: {
             pending?: string,

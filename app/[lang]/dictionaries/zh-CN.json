@@ -6,6 +6,12 @@
         "about": "关于",
         "products": "产品"
     },
+    "loginPage": {
+        "formTitle": "Login",
+        "submit": "Login",
+        "success": "Login successful!",
+        "emailOrPwdFailed": "Email or password is incorrect."
+    },
     "registerPage": {
         "verify": {
             "pending": "Verirying your email... Please wait.",
