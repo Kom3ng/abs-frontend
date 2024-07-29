@@ -3,6 +3,7 @@
 "use server"
 
 import {getEmailSchema, getPasswordSchema} from "@/app/[lang]/register/schemas";
+import transporter from "@/app/lib/email";
 import prisma from "@/app/lib/prisma";
 import { kv } from "@vercel/kv";
 import { createHash, randomUUID } from "crypto";
@@ -97,7 +98,12 @@ function isPasswordValid(password: string): boolean{
 }
 
 async function sendVerificationEmail(email: string, token: string){
-    // TODO
+    transporter.sendMail({
+        from: '"Abstruack" noreply@abs.astrack.me',
+        to: email,
+        subject: 'Verify your email',
+        html: `<a href="https://abs.astrack.me/register/verify?token=${token}">Click here to verify your email</a> </br> or copy and paste this link to your browser: https://abs.astrack.me/register/verify?token=${token}`
+    })
 }
 
 function generateToken(): string{
