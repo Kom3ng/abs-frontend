@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { getDictionary } from "../../dictionaries";
 import RegisterVerifyMain from "./main";
 
@@ -10,6 +11,8 @@ export default async function VerifyPage({params}: { params: { lang: string } })
     const dict = await getDictionary(lang);
    
     return (
-        <RegisterVerifyMain dict={dict} />
+       <Suspense>
+         <RegisterVerifyMain dict={dict} />
+       </Suspense>
     )
 }
