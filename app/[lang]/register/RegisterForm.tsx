@@ -2,15 +2,15 @@
 
 import React, { useRef, useState } from "react";
 import { Dict } from "@/app/[lang]/dictionaries";
-import { getEmailSchema, getPasswordSchema } from "@/app/[lang]/register/schemas";
 import register from "./register";
 import { useFormStatus } from "react-dom";
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Turnstile } from "@marsidev/react-turnstile";
 import { useRouter } from "next/navigation";
+import { getEmailSchema, getPasswordSchema } from "@/app/lib/schemas";
 
-export default function LoginForm({ dict, lang }: { dict: Dict, lang: string }) {
+export default function RegisterForm({ dict, lang }: { dict: Dict, lang: string }) {
     const [emailHint, setEmailHint] = useState<string>('');
     const [passwordHint, setPasswordHint] = useState<string>('');
 
@@ -66,11 +66,6 @@ export default function LoginForm({ dict, lang }: { dict: Dict, lang: string }) 
                     <label htmlFor="password" className="block text-sm font-medium leading-6">
                         Password
                     </label>
-                    <div className="text-sm">
-                        <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                            Forgot password?
-                        </a>
-                    </div>
                 </div>
                 <div className="mt-2">
                     <input

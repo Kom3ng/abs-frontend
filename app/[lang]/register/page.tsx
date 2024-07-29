@@ -1,6 +1,6 @@
 import {getDictionary} from "@/app/[lang]/dictionaries";
 import React from "react";
-import LoginForm from "@/app/[lang]/register/LoginForm";
+import RegisterForm from "@/app/[lang]/register/RegisterForm";
 
 export async function generateStaticParams() {
     return [{ lang: 'en-US' }, { lang: 'zh-CN' }]
@@ -19,7 +19,7 @@ export default async function RegisterPage({params}: { params: { lang: string } 
             </div>
 
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <LoginForm dict={dict} lang={lang} />
+                <RegisterForm dict={dict} lang={lang} />
             </div>
         </div>
     )

@@ -26,3 +26,24 @@ export const getNicknameSchema = (dict: Dict) => {
         .min(1, dict.errors?.input?.nickname?.minlength)
         .max(20, dict.errors?.input?.nickname?.maxlength);
 }
+
+export function isEmailValid(email: string): boolean{
+    return getEmailSchema({}).safeParse(email).success
+}
+
+export function isPasswordValid(password: string): boolean{
+    return getPasswordSchema({}).safeParse(password).success
+}
+
+export async function isTurnsliteValid(token: string): Promise<boolean>{
+    return await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+        body: JSON.stringify({
+            secret: process.env.TURNSTILE_SECRET,
+            response: token
+        }),
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		}
+    }).then(r => r.json()).then(r => r.success === true)
+}

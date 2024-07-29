@@ -2,9 +2,9 @@
 
 "use server"
 
-import {getEmailSchema, getPasswordSchema} from "@/app/[lang]/register/schemas";
 import transporter from "@/app/lib/email";
 import prisma from "@/app/lib/prisma";
+import { isEmailValid, isPasswordValid, isTurnsliteValid } from "@/app/lib/schemas";
 import { kv } from "@vercel/kv";
 import { createHash, randomUUID } from "crypto";
 import { ulid } from "ulid";
@@ -74,27 +74,6 @@ async function isEmailExists(email: string | undefined) {
             email,
         }
     }).then(r => r !== null);
-}
-
-async function isTurnsliteValid(token: string): Promise<boolean>{
-    return await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-        body: JSON.stringify({
-            secret: process.env.TURNSTILE_SECRET,
-            response: token
-        }),
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		}
-    }).then(r => r.json()).then(r => r.success === true)
-}
-
-function isEmailValid(email: string): boolean{
-    return getEmailSchema({}).safeParse(email).success
-}
-
-function isPasswordValid(password: string): boolean{
-    return getPasswordSchema({}).safeParse(password).success
 }
 
 async function sendVerificationEmail(email: string, token: string){
