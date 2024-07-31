@@ -7,6 +7,8 @@ import { createHash } from "crypto"
 import { cookies } from "next/headers"
 import { ulid } from "ulid"
 
+const sessionMaxAge = 4 * 30 * 24 * 60 * 60
+
 export default async function login(f: FormData, turnsliteToken: string): Promise<LoginResult>{
     const email = f.get('email')?.toString()
     const password = f.get('password')?.toString()
@@ -44,11 +46,15 @@ export default async function login(f: FormData, turnsliteToken: string): Promis
     if(hash.digest('base64') === passwordHash){
         const sessionId = ulid()
         kv.set(`session:${sessionId}`, account.userId, {
-            ex: 4 * 30 * 24 * 60 * 60
+            ex: sessionMaxAge
         })
 
         const cookie = await cookies()
-        cookie.set('sessionId', sessionId)
+        cookie.set('sessionId', sessionId, {
+            maxAge: sessionMaxAge,
+            httpOnly: true,
+            secure: true,
+        })
         
         return {
             success: true
