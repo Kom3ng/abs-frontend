@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Dict } from "@/app/[lang]/dictionaries";
 import { useFormStatus } from "react-dom";
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
@@ -9,6 +9,8 @@ import { Turnstile, TurnstileInstance } from "@marsidev/react-turnstile";
 import { useRouter } from "next/navigation";
 import { getEmailSchema, getPasswordSchema } from "@/app/lib/schemas";
 import login from "./loginAction";
+import { UserContext } from "../UserPovider";
+import getUser from "../userAction";
 
 export default function LoginForm({ dict, lang }: { dict: Dict, lang: string }) {
     const [emailHint, setEmailHint] = useState<string>('');
@@ -134,12 +136,14 @@ function SubmitButton({ isEmailCorrect, isPasswordCorrect, isTurnsliteSuccess, d
 
 function StateHint({ state, dict, lang }: { state: LoginResult, dict: Dict, lang: string }) {
     const router = useRouter();
+    const { setUser } = useContext(UserContext);
 
     if (Object.keys(state).length === 0) {
         return <></>
     }
 
     if (state.success) {
+        setUser(state.data || null)
         router.push(`/${lang}/`)
         return <div className="text-green-500">{dict.loginPage?.success}</div>
     }

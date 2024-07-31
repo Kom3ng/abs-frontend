@@ -50,15 +50,28 @@ export default async function login(f: FormData, turnsliteToken: string): Promis
             ex: sessionMaxAge
         })
 
-        const cookie = await cookies()
+        const cookie = cookies()
         cookie.set('sessionId', sessionId, {
             maxAge: sessionMaxAge,
             httpOnly: true,
             secure: isProduction,
         })
         
+        const user = await prisma.user.findUnique({
+            where: {
+                id: account.userId
+            }
+        })
+
         return {
-            success: true
+            success: true,
+            data: user ? {
+                id: user.id,
+                nickName: user.nickName,
+                registerDate: user.createdAt,
+                avatar: user.avatar,
+                birthday: user.birthday
+            } : undefined
         }
     }
     
