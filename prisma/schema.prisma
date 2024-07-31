@@ -8,18 +8,22 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 model User {
-  id          Int       @id @default(autoincrement())
-  nickName    String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  avatar      String?   @default("https://lain.astrack.me/abs/img/default_avatar.png")
-  userGroup   UserGroup @relation(fields: [userGroupId], references: [id])
-  userGroupId String    @default("clz2bmr870000dp7kt9y8gdgc")
-  sex         Sex?      @relation(fields: [sexId], references: [id])
-  sexId       String?
-  birthday    DateTime?
-  account     Account?
+  id        Int       @id @default(autoincrement())
+  nickName  String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  avatar    String?   @default("https://lain.astrack.me/abs/img/default_avatar.png")
+  role      Role      @default(USER)
+  sex       Sex?      @relation(fields: [sexId], references: [id])
+  sexId     String?
+  birthday  DateTime?
+  account   Account?
 }
 
 model Account {
@@ -43,32 +47,6 @@ model Session {
   account   Account  @relation(fields: [accountId], references: [id])
   accountId String
   userId    Int
-}
-
-model UserGroup {
-  id        String          @id @default(cuid())
-  name      String          @unique
-  createdAt DateTime        @default(now())
-  updatedAt DateTime        @updatedAt
-  roles     UserGroupRole[]
-  users     User[]
-}
-
-model Role {
-  id         String          @id @default(cuid())
-  name       String          @unique
-  createdAt  DateTime        @default(now())
-  updatedAt  DateTime        @updatedAt
-  userGroups UserGroupRole[]
-}
-
-model UserGroupRole {
-  userGroupId String
-  roleId      String
-  userGroup   UserGroup @relation(fields: [userGroupId], references: [id])
-  role        Role      @relation(fields: [roleId], references: [id])
-
-  @@id([userGroupId, roleId])
 }
 
 model Sex {

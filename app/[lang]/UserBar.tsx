@@ -1,19 +1,17 @@
-import { cookies } from "next/headers";
+"use client"
+
 import { Dict } from "./dictionaries";
 import Image from "next/image";
-import getUser from "./userAction";
+import { useContext } from "react";
+import { UserContext } from "./UserPovider";
 
-export default async function UserBar({ dict, lang }: { dict: Dict, lang: string }) {
-    const cookie = cookies();
-    const sessionId = cookie.get('sessionId')?.value;
-    if (sessionId) {
-        const user = await getUser(sessionId);
+export default function UserBar({ dict, lang }: { dict: Dict, lang: string }) {
+    const { user } = useContext(UserContext);
 
-        if (user){
-            return (
-                <Image src={user.avatar || ''} alt="avatar" width={40} height={40} className="rounded-full" />
-            )
-        }        
+    if (user) {
+        return (
+            <Image src={user.avatar || ''} alt="avatar" width={40} height={40} className="rounded-full" />
+        )
     }
 
     return (

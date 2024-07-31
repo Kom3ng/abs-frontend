@@ -8,6 +8,7 @@ import { cookies } from "next/headers"
 import { ulid } from "ulid"
 
 const sessionMaxAge = 4 * 30 * 24 * 60 * 60
+const isProduction = process.env.NODE_ENV === 'production'
 
 export default async function login(f: FormData, turnsliteToken: string): Promise<LoginResult>{
     const email = f.get('email')?.toString()
@@ -53,7 +54,7 @@ export default async function login(f: FormData, turnsliteToken: string): Promis
         cookie.set('sessionId', sessionId, {
             maxAge: sessionMaxAge,
             httpOnly: true,
-            secure: true,
+            secure: isProduction,
         })
         
         return {
