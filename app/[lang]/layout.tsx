@@ -7,7 +7,6 @@ import React from "react";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import UserBar from "./UserBar";
 import UserProvider from "./UserPovider";
-import { cookies } from "next/headers";
 import getUser from "./userAction";
 
 const jetBrainsMono = JetBrains_Mono({ subsets: ["latin"] });

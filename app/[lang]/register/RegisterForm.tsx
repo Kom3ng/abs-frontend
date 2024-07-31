@@ -34,7 +34,7 @@ export default function RegisterForm({ dict, lang }: { dict: Dict, lang: string 
         }}>
             <div>
                 <label htmlFor="email" className="block text-sm font-medium leading-6">
-                    Email address
+                    {dict.registerPage?.email}
                 </label>
                 <div className="mt-2">
                     <input
@@ -64,7 +64,7 @@ export default function RegisterForm({ dict, lang }: { dict: Dict, lang: string 
             <div>
                 <div className="flex items-center justify-between">
                     <label htmlFor="password" className="block text-sm font-medium leading-6">
-                        Password
+                        {dict.registerPage?.password}
                     </label>
                 </div>
                 <div className="mt-2">

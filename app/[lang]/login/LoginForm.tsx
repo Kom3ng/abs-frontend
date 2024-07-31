@@ -37,7 +37,7 @@ export default function LoginForm({ dict, lang }: { dict: Dict, lang: string }) 
         }}>
             <div>
                 <label htmlFor="email" className="block text-sm font-medium leading-6">
-                    Email address
+                    {dict.loginPage?.email}
                 </label>
                 <div className="mt-2">
                     <input
@@ -67,7 +67,7 @@ export default function LoginForm({ dict, lang }: { dict: Dict, lang: string }) 
             <div>
                 <div className="flex items-center justify-between">
                     <label htmlFor="password" className="block text-sm font-medium leading-6">
-                        Password
+                        {dict.loginPage?.password}
                     </label>
                 </div>
                 <div className="mt-2">

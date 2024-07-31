@@ -28,6 +28,8 @@ export type Dict = {
         submit?: string,
         success?: string,
         emailOrPwdFailed?: string,
+        email?: string,
+        password?: string,
     },
     registerPage?: {
         verify?: {
@@ -38,7 +40,9 @@ export type Dict = {
         },
         toVerify?: {
             message?: string
-        }
+        },
+        email?: string,
+        password?: string,
     },
     errors?: {
         input?: {

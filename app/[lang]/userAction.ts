@@ -5,8 +5,7 @@ import prisma from "../lib/prisma"
 import { cookies } from "next/headers"
 
 export default async function getUser() {
-    const cookie = cookies()
-    const sessionId = cookie.get('sessionId')?.value
+    const sessionId = cookies().get('sessionId')?.value
 
     if (!sessionId){
         return null
@@ -15,7 +14,7 @@ export default async function getUser() {
     const id = await kv.get<number>(`session:${sessionId}`)
 
     if (!id) {
-        cookie.delete('sessionId')
+        cookies().delete('sessionId')
         return null
     }
 

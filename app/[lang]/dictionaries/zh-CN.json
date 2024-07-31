@@ -2,26 +2,32 @@
     "name": "Abstruck",
     "login": "登陆",
     "register": "注册",
+    "email": "Email",
+    "password": "Password",
     "nav": {
         "about": "关于",
         "products": "产品"
     },
     "loginPage": {
-        "formTitle": "Login",
-        "submit": "Login",
-        "success": "Login successful!",
-        "emailOrPwdFailed": "Email or password is incorrect."
+        "formTitle": "登陆",
+        "submit": "登陆",
+        "success": "登陆成功!",
+        "emailOrPwdFailed": "邮箱或密码错误。",
+        "email": "邮箱地址:",
+        "password": "密码:"
     },
     "registerPage": {
         "verify": {
-            "pending": "Verirying your email... Please wait.",
-            "success": "Email verified! You can now login.",
-            "failed": "Email verification failed. Please try again.",
-            "noToken": "Are you serious?"
+            "pending": "正在检验邮箱，请等待。",
+            "success": "验证成功，你现在可以登陆了。",
+            "failed": "验证失败，请稍后重试",
+            "noToken": "?"
         },
         "toVerify": {
-            "message": "A verification email has been sent to your email address. Please verify your email to complete the registration."
-        }
+            "message": "一个验证邮件已发送至你的邮箱。"
+        },
+        "email": "邮箱地址:",
+        "password": "密码:"
     },
     "errors": {
         "input": {
@@ -31,20 +37,20 @@
                 "maxlength": "Nickname cannot be more than 20 characters long"
             },
             "email": {
-                "required": "Email is required",
-                "invalid": "Email is invalid",
-                "exist": "Email already exists"
+                "required": "需要邮箱。",
+                "invalid": "无效邮箱。",
+                "exist": "邮箱已注册。"
             },
             "password": {
-                "required": "Password is required",
-                "minlength": "Password must be at least 6 characters long",
-                "maxlength": "Password cannot be more than 20 characters long",
-                "invalid": "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character"
+                "required": "需要密码。",
+                "minlength": "密码需要至少6个字符。",
+                "maxlength": "密码不能长于20个字符。",
+                "invalid": "密码至少包含至少一个大写字母，小写字母，数字和特殊字符(@$!%*?&)。"
             }
         },
-        "server": "Internal server error.",
-        "unkown": "Unkown error.",
-        "turnsliteFailed": "CAPTCHA failed."
+        "server": "内部错误。",
+        "unkown": "位置错误。",
+        "turnsliteFailed": "验证码错误。"
     },
-    "registerSuccess": "Succesfully registered!"
+    "registerSuccess": "注册成功!"
 }

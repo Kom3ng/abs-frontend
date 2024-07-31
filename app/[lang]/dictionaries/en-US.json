@@ -10,7 +10,9 @@
         "formTitle": "Login",
         "submit": "Login",
         "success": "Login successful!",
-        "emailOrPwdFailed": "Email or password is incorrect."
+        "emailOrPwdFailed": "Email or password is incorrect.",
+        "email": "Email address:",
+        "password": "Password:"
     },
     "registerPage": {
         "verify": {
@@ -21,7 +23,9 @@
         },
         "toVerify": {
             "message": "A verification email has been sent to your email address. Please verify your email to complete the registration."
-        }
+        },
+        "email": "Email address:",
+        "password": "Password:"
     },
     "errors": {
         "input": {
@@ -39,7 +43,7 @@
                 "required": "Password is required.",
                 "minlength": "Password must be at least 6 characters long.",
                 "maxlength": "Password cannot be more than 20 characters long.",
-                "invalid": "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character."
+                "invalid": "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character(@$!%*?&)."
             }
         },
         "server": "Internal server error.",
