@@ -1,14 +1,7 @@
 "use client"
 
-import React, { createContext, useState } from 'react';
-
-interface User{
-    id: number;
-    nickName: string | null;
-    registerDate: Date;
-    avatar: string | null;
-    birthday: Date | null;
-}
+import React, { createContext, useEffect, useState } from 'react';
+import getUser from './userAction';
 
 interface UserContextProps {
     user: User | null;
@@ -20,8 +13,12 @@ export const UserContext = createContext<UserContextProps>({
     setUser: () => {},
 });
 
-const UserProvider: React.FC<{ children: React.ReactNode, v: User | null }> = ({ children, v }) => {
-    const [user, setUser] = useState<User | null>(v);
+const UserProvider: React.FC<{ children: React.ReactNode}> = ({ children }) => {
+    const [user, setUser] = useState<User | null>(null);
+
+    useEffect(() => {
+        getUser().then(setUser);
+    }, [])
 
     return (
         <UserContext.Provider value={{ user, setUser }}>

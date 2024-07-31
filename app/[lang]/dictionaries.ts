@@ -1,7 +1,7 @@
 import 'server-only'
 
 type Dictionary = {
-    [key: string]: () => Promise<any>;
+    [key: string]: () => Promise<Dict>;
 };
 
 const dictionaries: Dictionary = {
