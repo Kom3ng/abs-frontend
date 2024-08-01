@@ -2,6 +2,13 @@
     "name": "Abstruck",
     "login": "Login",
     "register": "Register",
+    "me": {
+        "avatar":{
+            "openEditor": "Click to edit.",
+            "uploadHint": "Enter the URL of the image you want to use as your avatar.",
+            "confirm": "Confirm"
+        }
+    },
     "nav": {
         "about": "About",
         "products": "Products"

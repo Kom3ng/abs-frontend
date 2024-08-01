@@ -4,6 +4,7 @@ import { kv } from "@vercel/kv"
 import prisma from "../lib/prisma"
 import { cookies } from "next/headers"
 
+
 export default async function getUser(): Promise<User | null> {
     const sessionId = cookies().get('sessionId')?.value
 

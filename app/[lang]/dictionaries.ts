@@ -19,6 +19,14 @@ export type Dict = {
     name?: string,
     login?: string,
     register?: string,
+    me?: {
+        avatar?:{
+            openEditor?: string,
+            uploadHint?: string,
+            confirm?: string,
+            invalidUrl?: string
+        }
+    },
     nav?: {
         about?: string,
         products?: string

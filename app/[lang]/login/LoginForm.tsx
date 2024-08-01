@@ -10,7 +10,6 @@ import { useRouter } from "next/navigation";
 import { getEmailSchema, getPasswordSchema } from "@/app/lib/schemas";
 import login from "./loginAction";
 import { UserContext } from "../UserPovider";
-import getUser from "../userAction";
 
 export default function LoginForm({ dict, lang }: { dict: Dict, lang: string }) {
     const [emailHint, setEmailHint] = useState<string>('');
